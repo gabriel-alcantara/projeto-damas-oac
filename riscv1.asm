@@ -7,72 +7,37 @@ Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 47
  # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
  Jogada_Branca:
  #retorna e a0 o valor da peça
- jal Calcula_Posição
+ jal Calcular_Posição
 
-#Procurando a peça que deseja mover no vetor
-add t0, a0, zero
-la t2, Brancas
-lw t1, 0(t2)
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-addi t2,t2, 4
-beq t0, t1, Mover_Peça
-jal ra, Não_Ha_Peça
+#verificar se é dama Branca, entrada a posição da peça
+jal Dama_Branca
 
+#Procurando a peça que deseja mover no vetor. Entra a posição a0 e retorna a posição a0 e o endereço da peça na memória a1
+jal Achar_Branca
+
+#Caso a peça exista ela vêm para cá onde a0 é a posição e a1 o local da memória da peça
 Mover_Peça:
-addi sp, sp 4
-sw t0, -4(sp)
-addi sp, sp 4
-sw t2, -4(sp)
-jal Calcula_Posição
+#Posições posiveis de mover, retorna na pilha para onde é possível se mover, havendo ou não peças lá e tem entrada a posição da peça
+jal Possivel_Mover
+#caso seja posivel comer uma peça preta ele vai para a função comer caso não ele retorna
+jal Verificar_Comer_Pretas
 addi sp, sp -4
-sw t0, 0(sp)
+sw a0, 0(sp)
 addi sp, sp -4
-sw t2, 0(sp)
+sw a1, 0(sp)
+#Retorna em a0 o valor da posição
+jal Calcular_Posição
+add a2, a0, zero
+sw a1, 0(sp)
+addi sp, sp 4
+sw a0, 0(sp)
+addi sp, sp 4
+
 
 #Primeiro Verificar a diagonal esquerda
-li a0, 7
-#posição para ir
-add a0, t0, t1
-#posição
-add a1, t0, zero
+li t1, 7
 
-addi sp, sp 4
-sw t0, -4(sp)
-addi sp, sp 4
-sw t2, -4(sp)
-#Verifica se há um alidado, caso não haja ele volta para ca
-jal Verificar_Brancas
-#Verifica se há um inimigo, caso não haja ele volta para ca, caso haja ele verifica se é possível comer
-jal Verificar_Pretas
-addi sp, sp -4
-sw t0, 0(sp)
-addi sp, sp -4
-sw t2, 0(sp)
-
-#Verificars se há Peça amiga
-
-#Retorna a posição da peça em a0
-Calcula_Posição:
+Calcular_Posição:
 #Digitar posição ao qual deseja se mover
 li a7, 5
  ecall
@@ -90,84 +55,133 @@ ecall
 bgeu a0, t1,Coluna_invalida 
 #acha-se a posição da peça
 add a0, a0, t0
-
+#retorna
 jr ra
 
-#entrada a0, posição a qual se deseja mover
-Verificar_Brancas:
+Possivel_Mover:
+#vai retornar a coluna que a peça esta
+li t1, 8
+rem t0, a0, t1
+li t1,0
+beq t0, t1, Ponta_Esquerda
+li t1,7
+beq t0, t1, Ponta_Direita
+addi sp, sp, -16
+addi t0, a0, 7
+sw t0, 0(sp)
+addi t0, a0, 9
+sw t0, 4(sp)
+addi t0, a0, -7
+sw t0, 8(sp)
+addi t0, a0, -9
+sw t0, 12(sp)
+
+
+Dama_Branca:
+add t0, a0, zero
 la t2, Brancas
 lw t1, 0(t2)
-beq a0, t1, Peça_Aliada
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-addi t2,t2, 4
-beq a0, t1, Peça_Aliada
-#caso não haja pessas aliadas
-j Voltar
-
-
-Verificar_Pretas:
-la t2, Brancas
 lw t1, 0(t2)
-beq a0, t1, Pode_Comer
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 addi t2,t2, 4
-beq a0, t1, Pode_Comer
-addi t2,t2, 4
-beq a0, t1, Pode_Comer
-#caso não haja pessas aliadas
-j Voltar
-
-Voltar:
+lw t1, 0(t2)
+addi t1, t1, 100
+beq t0, t1, Mover_Dama
 jr ra
 
-Pode_Comer:
+Achar_Branca:
+add t0, a0, zero
+la t2, Brancas
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+addi t2,t2, 4
+lw a1, 0(t2)
+beq t0, a1, Mover_Peça
+jal ra, Não_Ha_Peça_Branca
 
-Peça_Aliada:
-#Não é possivel a movimentação pela  existencia de uma peça aliada
-j Mover_Peça
 
+Verificar_Comer_Pretas:
 
+Ponta_Esquerda:
 
-Dama:
+Ponta_Direita:
 
 Linha_Invalida:
 
 Coluna_invalida:
 
-Não_Ha_Peça:
+Mover_Dama:
+
+Não_Ha_Peça_Branca:
+#Falar que não há peça nesta posição
+j Jogada_Branca
