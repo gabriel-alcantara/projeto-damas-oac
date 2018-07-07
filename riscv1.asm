@@ -6,6 +6,8 @@ Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 47
  .text
  # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
  Jogada_Branca:
+ #Marca que a jogada é branca
+ li s2, 0
  #retorna e a0 o valor da peça
  jal Calcular_Posição
 
@@ -53,19 +55,28 @@ j Opção_Invalida
 
 # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
  Jogada_Preta:
+  #Marca que a jogada é preta
+ li s2, 1
  #retorna e a0 o valor da peça
  jal Calcular_Posição
-
 #verificar se é dama Branca, entrada a posição da peça
 jal Dama_Preta
-
 #Procurando a peça que deseja mover no vetor. Entra a posição a0 e retorna a posição a0 e o endereço da peça na memória a1
 jal Achar_Preta
 
 
 Fim_Jogada:
-sw t1,0(s1)
+add a0, t1, zero
+add a1, s2, zero
+#tem como entradas se é branca ou preta(a1) e a posição(a0)   e retorna em a0 a mesma posição ou a posição +100 para indicar que é uma dama
+jal Verificar_Dama
+Fim_Jogada_Dama:
+sw a0,0(s1)
+jal Printar_Tela
+jal Verificar_Final_Jogo
 j Jogada_PC
+
+
 Jogada_PC:
 
 
@@ -395,6 +406,32 @@ j Calcular_Posição
 
 
 Mover_Dama:
+
+
+Verificar_Dama:
+li t1, 55
+bgt a0, t1, Criar_Dama_Branca
+li t1, 8
+blt a0, t1, Criar_Dama_Preta
+jr ra
+
+Criar_Dama_Branca:
+li t1, 0
+bne a1, t1 Criar
+jr ra
+
+Criar:
+addi a0, a0, 100
+jr ra
+
+Criar_Dama_Preta:
+li t1, 1
+bne a1, t1 Criar
+jr ra
+
+Verificar_Final_Jogo:
+
+Printar_Tela:
 
 Não_Ha_Peça_Branca:
 #Falar que não há peça nesta posição
