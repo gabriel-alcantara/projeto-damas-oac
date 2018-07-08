@@ -27,16 +27,35 @@ add s1, a1, zero
 jal Possivel_Mover
 #ele retorn de a0 a a3 as  posições possiveis de ir e de entrada recebe as posições possiveis de ir de a0 a a3 e a4 a posição da peça
 add a4, s0, zero
+addi sp, sp, -16 #salva na pilha as posições para onde se pode ir
+sw a0, 0(sp)
+sw a1, 4(sp)
+sw a2, 8(sp)
+sw a3, 12(sp)
+add a6, zero, sp
 Verificações:
-jal Verificar_Amigas
-li t1, 0
-la t0, Pretas
-lw t1, 0(t0)
-bne s2,t1, Puloo
-la t0, Brancas
-lw t1, 0(t0)
-Puloo:
-jal Verificar_Comer
+add a1, zero, zero
+jal Verificar_Amigas # entra a0 como a posição onde se deseja ir
+# Tem como entrada a posição a ser avaliada(a0) e a posição onde a peça esta(a1) 
+jal Verificar_Comer #Retorna a posição posição para movimento(a0) e caso comer seja possivel o endereço da peça a ser comida(a1)
+beq a1, zero, Não_Salvar_Comida
+
+Não_Salvar_Comida:
+sw a0, 0(a6)#salva nova posição na pilha
+addi a6, a6, 4#Verifica a proxima posição
+lw a0, 0(a6)#Proxima posição a ser verificada
+li t0, 4
+bne a5, t0, Verificações
+#Tirando da pilha as posições
+lw a0, 0(sp)
+addi sp, sp, 4
+lw a1, 0(sp)
+addi sp, sp, 4
+lw a2, 0(sp)
+addi sp, sp, 4
+lw a3, 0(sp)
+addi sp, sp, 4
+#Caso passe todas as opções de movimento foram verificadas
 #Pedir para o jogador escolher para qual das 4 posições ele deseja ir, onde a zero é a primeira a ser apresentada e a 3  a úlima
 add a4, a3, zero
 add a3, a2, zero
@@ -153,54 +172,43 @@ jr ra
 
 
 Dama_Branca:
-add t0, a0, zero
+add t0, a0, zero#Posição da peça
 la t2, Brancas
 lw t1, 0(t2)
-addi t1, t1, 100
+addi t0, t0, 100 #Somo-se 100 a posição para verificar se há alguma dama neste local
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 jr ra
 
@@ -208,51 +216,40 @@ Dama_Preta:
 add t0, a0, zero
 la t2, Pretas
 lw t1, 0(t2)
-addi t1, t1, 100
+addi t0, t0, 100 #Somo-se 100 a posição para verificar se há alguma dama neste local
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 addi t2,t2, 4
 lw t1, 0(t2)
-addi t1, t1, 100
 beq t0, t1, Mover_Dama
 jr ra
 
@@ -338,28 +335,44 @@ jal ra, Não_Ha_Peça_Preta
 
 
 Verificar_Comer:
-beq a0, t1, Possivel_Comer1
-beq a1, t1, Possivel_Comer2
-beq a2, t1, Possivel_Comer3
-beq a3, t1, Possivel_Comer4
-jr ra
-Possivel_Comer1:
-sub t0, a0, a4
-add a0, a0, t0 
-j Verificações
-Possivel_Comer2:
-sub t0, a1, a4
-add a1, a1, t0
-j Verificações
-Possivel_Comer3:
-sub t0, a2, a4
-add a2, a2, t0
-j Verificações
-Possivel_Comer4:
-sub t0, a3, a4
-add a3, a3, t0
-j Verificações
+li t0, 0
+beq s2, t0, Verificar_Comer_Branca#Se o jogador estiver com as brancas Verifica se há uma Preta
+j Verificar_Comer_Preta
 
+Verificar_Comer_Preta: #Se o jogador estiver com as pretas Verifica se há uma Branca
+la t0, Brancas
+li t2, 0
+li t3, 11
+j Loop_Verificar_Inimiga
+
+Verificar_Comer_Branca:
+la t0, Pretas
+li t2, 0
+li t3, 11
+j Loop_Verificar_Inimiga
+
+Loop_Verificar_Inimiga:
+lw t1, 0(t0)
+bne a0, t1, Não_Inimiga#Caso haja uma peça inimiga verifica se é possvel comer ela
+sub t3, a0, a1
+add a0, a0, t3
+addi sp, sp -12
+sw t0, 0(sp)
+sw t1, 4(sp)
+sw ra, 8(sp)
+jal Verificar_Amigas #Verifica se há uma peça amiga na posição
+lw t0, 0(sp)
+addi sp, sp, 4
+lw t1, 0(sp)
+addi sp, sp, 4
+lw a0, 0(sp)
+
+jr ra
+Não_Inimiga:
+beq t2, t3, Voltar
+addi t2, t2, 1
+addi t0, t0, 4
+j Loop_Verificar_Inimiga
 
 
 Ponta_Esquerda:
@@ -432,18 +445,12 @@ Loop_Verificar_Amiga:
 lw t1, 0(t0)
 bne a0, t1, Não_Amiga1
 addi a0, zero, -1
+jr ra
 Não_Amiga1:
-bne a1, t1, Não_Amiga2
-addi a1, zero, -1
-Não_Amiga2:
-bne a2, t1, Não_Amiga3
-addi a2, zero, -1
-Não_Amiga3:
-bne a3, t1, Não_Amiga4
-addi a3, zero, -1
-Não_Amiga4:
 beq t2, t3, Voltar
 addi t2, t2, 1
+addi t0, t0, 4
+j Loop_Verificar_Amiga
 Voltar:
 jr ra
 
