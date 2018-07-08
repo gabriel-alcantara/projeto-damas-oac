@@ -27,7 +27,16 @@ add s1, a1, zero
 jal Possivel_Mover
 #ele retorn de a0 a a3 as  posições possiveis de ir e de entrada recebe as posições possiveis de ir de a0 a a3 e a4 a posição da peça
 add a4, s0, zero
-jal Verificar_Comer_Preta
+Verificações:
+jal Verificar_Amigas
+li t1, 0
+bne s2,t1, Puloo
+la t0, Pretas
+lw t1, 0(t0)
+Puloo:
+la t0, Brancas
+lw t1, 0(t0)
+jal Verificar_Comer
 #Pedir para o jogador escolher para qual das 4 posições ele deseja ir, onde a zero é a primeira a ser apresentada e a 3  a úlima
 add a4, a3, zero
 add a3, a2, zero
@@ -76,8 +85,6 @@ jal Printar_Tela
 jal Verificar_Final_Jogo
 j Jogada_PC
 
-
-Jogada_PC:
 
 
 
@@ -329,30 +336,29 @@ lw a1, 0(t2)
 beq t0, a1, Mover_Peça
 jal ra, Não_Ha_Peça_Preta
 
-Verificar_Comer_Preta:
-la t0, Pretas
-lw t1, 0(t0)
-beq a0, t1, Possivel_Comer_Preta1
-beq a1, t1, Possivel_Comer_Preta2
-beq a2, t1, Possivel_Comer_Preta3
-beq a3, t1, Possivel_Comer_Preta4
+
+Verificar_Comer:
+beq a0, t1, Possivel_Comer1
+beq a1, t1, Possivel_Comer2
+beq a2, t1, Possivel_Comer3
+beq a3, t1, Possivel_Comer4
 jr ra
-Possivel_Comer_Preta1:
+Possivel_Comer1:
 sub t0, a0, a4
 add a0, a0, t0
-j Verificar_Comer_Preta
-Possivel_Comer_Preta2:
+j Verificar_Comer
+Possivel_Comer2:
 sub t0, a1, a4
 add a1, a1, t0
-j Verificar_Comer_Preta
-Possivel_Comer_Preta3:
+j Verificar_Comer
+Possivel_Comer3:
 sub t0, a2, a4
 add a2, a2, t0
-j Verificar_Comer_Preta
-Possivel_Comer_Preta4:
+j Verificar_Comer
+Possivel_Comer4:
 sub t0, a3, a4
 add a3, a3, t0
-j Verificar_Comer_Preta
+j Verificar_Comer
 
 
 
@@ -405,6 +411,42 @@ Linha_Coluna_Invalida:
 j Calcular_Posição
 
 
+Verificar_Amigas:
+li t0, 0
+beq s2, t0, Verificar_Brancas_Amigas
+j Verificar_Pretas_Amigas
+
+Verificar_Brancas_Amigas:
+la t0, Brancas
+li t2, 0
+li t3, 11
+j Loop_Verificar_Amiga
+
+Verificar_Pretas_Amigas:
+la t0, Pretas
+li t2, 0
+li t3, 11
+j Loop_Verificar_Amiga
+ 
+Loop_Verificar_Amiga:
+lw t1, 0(t0)
+bne a0, t1, Não_Amiga1
+addi a0, zero, -1
+Não_Amiga1:
+bne a1, t1, Não_Amiga2
+addi a1, zero, -1
+Não_Amiga2:
+bne a2, t1, Não_Amiga3
+addi a2, zero, -1
+Não_Amiga3:
+bne a3, t1, Não_Amiga4
+addi a3, zero, -1
+Não_Amiga4:
+beq t2, t3, Voltar
+addi t2, t2, 1
+Voltar:
+jr ra
+
 Mover_Dama:
 
 
@@ -440,3 +482,5 @@ j Jogada_Branca
 Não_Ha_Peça_Preta:
 #Falar que não há peça nesta posição
 j Jogada_Preta
+
+Jogada_PC:
