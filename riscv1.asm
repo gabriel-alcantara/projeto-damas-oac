@@ -30,12 +30,12 @@ add a4, s0, zero
 Verificações:
 jal Verificar_Amigas
 li t1, 0
-bne s2,t1, Puloo
 la t0, Pretas
 lw t1, 0(t0)
-Puloo:
+bne s2,t1, Puloo
 la t0, Brancas
 lw t1, 0(t0)
+Puloo:
 jal Verificar_Comer
 #Pedir para o jogador escolher para qual das 4 posições ele deseja ir, onde a zero é a primeira a ser apresentada e a 3  a úlima
 add a4, a3, zero
@@ -345,20 +345,20 @@ beq a3, t1, Possivel_Comer4
 jr ra
 Possivel_Comer1:
 sub t0, a0, a4
-add a0, a0, t0
-j Verificar_Comer
+add a0, a0, t0 
+j Verificações
 Possivel_Comer2:
 sub t0, a1, a4
 add a1, a1, t0
-j Verificar_Comer
+j Verificações
 Possivel_Comer3:
 sub t0, a2, a4
 add a2, a2, t0
-j Verificar_Comer
+j Verificações
 Possivel_Comer4:
 sub t0, a3, a4
 add a3, a3, t0
-j Verificar_Comer
+j Verificações
 
 
 
