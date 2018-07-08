@@ -396,7 +396,7 @@ Salto:
 beq t2, t3, Voltar
 addi t2, t2, 1
 addi t0, t0, 4
-addi a1, zero, -1#Pois não havera peça para ser comida
+add a1, zero, zero#Pois não havera peça para ser comida
 j Loop_Verificar_Inimiga
 
 Não_Pode_Comer:
@@ -406,7 +406,7 @@ lw t1, 0(sp)
 addi sp, sp, 4
 lw ra, 0(sp)
 addi a0, zero, -1
-addi a1, zero, -1
+add a1, zero, zero
 jr ra
 
 Ponta_Esquerda:
