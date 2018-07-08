@@ -372,7 +372,7 @@ j Continua1E
 Não_Fixa_1E:
 li a0, -1
 Continua1E:
-addi t0, a0, -9
+addi t0, a0, -7
 bltz t0, Não_Fixa_2E
 bgt t0, t1, Não_Fixa_2E
 add a1, t0, zero
@@ -394,7 +394,7 @@ j Continua1D
 Não_Fixa_1D:
 li a0, -1
 Continua1D:
-addi t0, a0, -7
+addi t0, a0, -9
 bltz t0, Não_Fixa_2D
 bgt t0, t1, Não_Fixa_2D
 add a1, t0, zero
