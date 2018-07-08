@@ -3,480 +3,339 @@ Brancas: 0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22
 
 Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 47
 
+MsgSelCol: .string "Digite o número da coluna(0 a 7): "
+MsgSelLin: .string "Digite o numero da linha(0 a 7): "
  .text
+# GAMELOOP:
+ 	# jal ra,Jogada_Branca
+ 	# jal ra,Jogada_Preta
+ 	# jal ra, VerificaPartida
+ 
+ 
  # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
- Jogada_Branca:
+Jogada_Branca:
  #Marca que a jogada é branca
- li s2, 0
- #retorna e a0 o valor da peça
- jal Calcular_Posição
-
-#verificar se é dama Branca, entrada a posição da peça
-jal Dama_Branca
-
-#Procurando a peça que deseja mover no vetor. Entra a posição a0 e retorna a posição a0 e o endereço da peça na memória a1
-jal Achar_Branca
-
+	li s2, 0
+ 	jal Calcular_Posição  #retorna e a0 o valor da peça
+ 	li tp,0  # tp== 0 peça branca : tp==1 peça preta
+Dama_Branca:
+	add t0, a0, zero
+	la t2, Brancas
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+Achar_Branca:
+	add t0, a0, zero
+	la t2, Brancas
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	jal ra, Não_Ha_Peça_Branca
 #Caso a peça exista ela vêm para cá onde a0 é a posição e a1 o local da memória da peça
-Mover_Peça:
-#Posições posiveis de mover, retorna na pilha para onde é possível se mover, havendo ou não peças lá e tem entrada a posição da peça
-add s0, a0, zero
-add s1, a1, zero
-#s0 é a posição e s1 o local da memoria da peça
-#Posições posiveis de mover, retorna de a0 a a3 onde é possível se mover, havendo ou não peças lá e tem entrada a posição da peça os valores -1 caso n possa mover a peça
-jal Possivel_Mover
-#ele retorn de a0 a a3 as  posições possiveis de ir e de entrada recebe as posições possiveis de ir de a0 a a3 e a4 a posição da peça
-add a4, s0, zero
-Verificações:
-jal Verificar_Amigas
-li t1, 0
-la t0, Pretas
-lw t1, 0(t0)
-bne s2,t1, Puloo
-la t0, Brancas
-lw t1, 0(t0)
-Puloo:
-jal Verificar_Comer
-#Pedir para o jogador escolher para qual das 4 posições ele deseja ir, onde a zero é a primeira a ser apresentada e a 3  a úlima
-add a4, a3, zero
-add a3, a2, zero
-add a2, a1, zero
-add a1, a0, zero
-Opção_Invalida:
-li a7, 5
-ecall
-li t0, 0
-add t1, a1, zero
-beq a0, t0, Fim_Jogada
-ecall
-li t0, 1
-add t1, a2, zero
-beq a0, t0, Fim_Jogada
-ecall
-li t0, 2
-add t1, a3, zero
-beq a0, t0, Fim_Jogada
-ecall
-li t0, 3
-add t1, a4, zero
-beq a0, t0, Fim_Jogada
-j Opção_Invalida
+Mover_Peça:     # tp== 0 peça branca : tp==1 peça preta
+	add s0, a0, zero # s0 := posicao da peça
+	add s1, a1, zero # s1 := endereço da peça
+	beq tp,zero,Comida_branca
+	Comida_preta:
+	
+	Comida_branca:
+		# s3 ==1 se pode comer atras para esquerda
+		# s4== 1 se pode comer atras para direita
+		# s5 == 1 se pode comer frente esquerda
+		# s6 == 1 se pode comer frente direta
+		addi s3,zero,0
+		addi s4,zero,0
+		addi s5,zero,0
+		addi s6,zero,0
+		comer_atras_esquerda:	addi t0,s0,-9 
+			addi a0,t0,0 # a0 := posicao atras a esquerda da peça
+			jal ra,Procura_Pretas # a0 recebe -1 se nao tem peça inimiga na posicao
+			li t1,-1
+			beq a0,t1,comer_atras_direita # se nao tem peca para comer verifica outra posiçao
+			addi a0,s0,-18
+			jal ra,Procura_pretas
+			bne a0,t1,comer_atras_direita  # se nao esta pode comer a peça, verifica outra posiçao
+			li s3,1
+		comer_atras_direita: addi t0,s0,-7
+			addi a0,t0,0 #a1:= posicao atras a direita da peça
+			jal ra,Procura_Pretas # a0 recebe -1 se nao tem peca inimiga na posicao
+			beq a0,t1,comer_frente_direita # se nao tem peca para comer, verifica outra posicao
+			addi a0,s0,-14     
+			jal ra,Procura_pretas
+			bne a0,t1,comer_frente_direita # se nao pode comer a peça,verifica outra posiçao
+			li s4,1
+		comer_frente_direita: addi t0,s0,9
+			addi a0,t0,0 # a2:= posicao frente a direta da peça
+			jal ra,Procura_Pretas # a0 recebe -1 se nao tem peça inimiga na posiçao
+			beq a0,t1,comer_frente_direta # se 
 
 # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
- Jogada_Preta:
+Jogada_Preta:
   #Marca que a jogada é preta
- li s2, 1
+	li s2, 1
  #retorna e a0 o valor da peça
- jal Calcular_Posição
+ 	jal Calcular_Posição
 #verificar se é dama Branca, entrada a posição da peça
-jal Dama_Preta
+	jal Dama_Preta
 #Procurando a peça que deseja mover no vetor. Entra a posição a0 e retorna a posição a0 e o endereço da peça na memória a1
-jal Achar_Preta
+	jal Achar_Preta
 
 
 Fim_Jogada:
-add a0, t1, zero
-add a1, s2, zero
+	add a0, t1, zero
+	add a1, s2, zero
 #tem como entradas se é branca ou preta(a1) e a posição(a0)   e retorna em a0 a mesma posição ou a posição +100 para indicar que é uma dama
-jal Verificar_Dama
+	jal Verificar_Dama
 Fim_Jogada_Dama:
-sw a0,0(s1)
-jal Printar_Tela
-jal Verificar_Final_Jogo
-j Jogada_PC
+	sw a0,0(s1)
+	jal Printar_Tela
+	jal Verificar_Final_Jogo
+	j Jogada_PC
 
 
 
 
+Procura_Pretas:# a0 esta a posição procurada
+		la t0,Pretas
+		addi t2,t0,48 # t2  recebe o ultimo endereço do vetor Pretas
+	For:	lw t1, 0(t0) # t1:= posiçao de uma peça preta
+		beq t1,a0,Fim_for #  if t1==a0 : acho a peça
+		addi t0,t0,4
+		bge t2,t0,For # if(t2>t0) : PC= For ; verifica se já percurou todo o vetor
+		addi a0,zero,-1 # -1 indicando posicao vazia ou com peca aliada
+		j ra
+	Fim_for:
+		addi a0,t1,0 # posicao da peca inimiga
+		j ra  
+		
 Calcular_Posição:
-#Digitar posição ao qual deseja se mover
-li a7, 5
-ecall
-li t1, 8
-#as Colunas vão de 0 a 7
-bgeu a0,t1, Linha_Coluna_Invalida 
-add t0, a0, zero
-#Calcula-se a posição usando a coluna
-mul t0, t0, t1
-#pega-se a linha
- li a7, 5
-ecall
- #as Colunas vão de 0 a 7
-bgeu a0, t1, Linha_Coluna_Invalida 
-#acha-se a posição da peça
-add a0, a0, t0
-#retorna
-jr ra
+	#Digitar posição ao qual deseja se mover
+	la a0,MsgSelLin # mensagem de leitura de linha
+	li a7,4
+	ecall
+	li a7, 5
+	ecall
+	li t1, 8
+	#as Colunas vão de 0 a 7
+	bgeu a0,t1, Linha_Coluna_Invalida 
+	add t0, a0, zero
+	#Calcula-se a posição usando a coluna
+	mul t0, t0, t1
+	la a0,MsgSelCol # mensagem de leitura de coluna
+	li a7,4
+	ecall
+	#pega-se a linha
+	 li a7, 5
+	ecall
+	 #as Colunas vão de 0 a 7
+	bgeu a0, t1, Linha_Coluna_Invalida 
+	#acha-se a posição da peça
+	add a0, a0, t0
+	#retorna
+	jr ra
 
-Possivel_Mover:
-#vai retornar a coluna que a peça esta
-li t1, 8
-rem t0, a0, t1
-li t1,0
-beq t0, t1, Ponta_Esquerda
-li t1,7
-beq t0, t1, Ponta_Direita
-li t1, 63
-addi t0, a0, 7
-bltz t0, Não_Fixa_1
-bgt t0, t1, Não_Fixa_1
-add a0, t0, zero
-j Continua1
-Não_Fixa_1:
-li a0, -1
-Continua1:
-addi t0, a0, 9
-bltz t0, Não_Fixa_2
-bgt t0, t1, Não_Fixa_2
-add a1, t0, zero
-j Continua2
-Não_Fixa_2:
-li a1, -1
-Continua2:
-addi t0, a0, -7
-bltz t0, Não_Fixa_3
-bgt t0, t1, Não_Fixa_3
-add a2, t0, zero
-j Continua3
-Não_Fixa_3:
-li a2, -1
-Continua3:
-addi t0, a0, -9
-bltz t0, Não_Fixa_4
-bgt t0, t1, Não_Fixa_4
-add a3, t0, zero
-j Continua4
-Não_Fixa_4:
-li a3, -1
-Continua4:
-jr ra
-
-
-Dama_Branca:
-add t0, a0, zero
-la t2, Brancas
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-jr ra
 
 Dama_Preta:
-add t0, a0, zero
-la t2, Pretas
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-addi t2,t2, 4
-lw t1, 0(t2)
-addi t1, t1, 100
-beq t0, t1, Mover_Dama
-jr ra
+	add t0, a0, zero
+	la t2, Pretas
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	addi t2,t2, 4
+	lw t1, 0(t2)
+	addi t1, t1, 100
+	beq t0, t1, Mover_Dama
+	jr ra
 
-Achar_Branca:
-add t0, a0, zero
-la t2, Brancas
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-jal ra, Não_Ha_Peça_Branca
 
 Achar_Preta:
-add t0, a0, zero
-la t2, Pretas
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-addi t2,t2, 4
-lw a1, 0(t2)
-beq t0, a1, Mover_Peça
-jal ra, Não_Ha_Peça_Preta
+	add t0, a0, zero
+	la t2, Pretas
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	addi t2,t2, 4
+	lw a1, 0(t2)
+	beq t0, a1, Mover_Peça
+	jal ra, Não_Ha_Peça_Preta
 
 
-Verificar_Comer:
-beq a0, t1, Possivel_Comer1
-beq a1, t1, Possivel_Comer2
-beq a2, t1, Possivel_Comer3
-beq a3, t1, Possivel_Comer4
-jr ra
-Possivel_Comer1:
-sub t0, a0, a4
-add a0, a0, t0 
-j Verificações
-Possivel_Comer2:
-sub t0, a1, a4
-add a1, a1, t0
-j Verificações
-Possivel_Comer3:
-sub t0, a2, a4
-add a2, a2, t0
-j Verificações
-Possivel_Comer4:
-sub t0, a3, a4
-add a3, a3, t0
-j Verificações
-
-
-
-Ponta_Esquerda:
-li t1, 63
-addi t0, a0, 9
-bltz t0, Não_Fixa_1
-bgt t0, t1, Não_Fixa_1
-add a0, t0, zero
-j Continua1E
-Não_Fixa_1E:
-li a0, -1
-Continua1E:
-addi t0, a0, -7
-bltz t0, Não_Fixa_2E
-bgt t0, t1, Não_Fixa_2E
-add a1, t0, zero
-j Continua2E
-Não_Fixa_2E:
-li a1, -1
-Continua2E:
-li a2, -1
-li a3, -1
-jr ra
-
-Ponta_Direita:
-li t1, 63
-addi t0, a0, 7
-bltz t0, Não_Fixa_1
-bgt t0, t1, Não_Fixa_1
-add a0, t0, zero
-j Continua1D
-Não_Fixa_1D:
-li a0, -1
-Continua1D:
-addi t0, a0, -9
-bltz t0, Não_Fixa_2D
-bgt t0, t1, Não_Fixa_2D
-add a1, t0, zero
-j Continua2D
-Não_Fixa_2D:
-li a1, -1
-Continua2D:
-li a2, -1
-li a3, -1
-jr ra
-
-Linha_Coluna_Invalida:
-#Printar coluna ou linha invlida e voltar para a pergunta da posição
-j Calcular_Posição
-
-
-Verificar_Amigas:
-li t0, 0
-beq s2, t0, Verificar_Brancas_Amigas
-j Verificar_Pretas_Amigas
-
-Verificar_Brancas_Amigas:
-la t0, Brancas
-li t2, 0
-li t3, 11
-j Loop_Verificar_Amiga
-
-Verificar_Pretas_Amigas:
-la t0, Pretas
-li t2, 0
-li t3, 11
-j Loop_Verificar_Amiga
- 
-Loop_Verificar_Amiga:
-lw t1, 0(t0)
-bne a0, t1, Não_Amiga1
-addi a0, zero, -1
-Não_Amiga1:
-bne a1, t1, Não_Amiga2
-addi a1, zero, -1
-Não_Amiga2:
-bne a2, t1, Não_Amiga3
-addi a2, zero, -1
-Não_Amiga3:
-bne a3, t1, Não_Amiga4
-addi a3, zero, -1
-Não_Amiga4:
-beq t2, t3, Voltar
-addi t2, t2, 1
-Voltar:
-jr ra
 
 Mover_Dama:
 
 
 Verificar_Dama:
-li t1, 55
-bgt a0, t1, Criar_Dama_Branca
-li t1, 8
-blt a0, t1, Criar_Dama_Preta
-jr ra
+	li t1, 55
+	bgt a0, t1, Criar_Dama_Branca
+	li t1, 8
+	blt a0, t1, Criar_Dama_Preta
+	jr ra
 
 Criar_Dama_Branca:
-li t1, 0
-bne a1, t1 Criar
-jr ra
+	li t1, 0
+	bne a1, t1 Criar
+	jr ra
 
 Criar:
-addi a0, a0, 100
-jr ra
+	addi a0, a0, 100
+	jr ra
 
 Criar_Dama_Preta:
-li t1, 1
-bne a1, t1 Criar
-jr ra
+	li t1, 1
+	bne a1, t1 Criar
+	jr ra
 
 Verificar_Final_Jogo:
 
 Printar_Tela:
 
 Não_Ha_Peça_Branca:
-#Falar que não há peça nesta posição
+	#Falar que não há peça nesta posição
 j Jogada_Branca
 
 Não_Ha_Peça_Preta:
