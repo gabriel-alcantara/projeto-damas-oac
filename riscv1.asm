@@ -39,8 +39,11 @@ jal Verificar_Amigas # entra a0 como a posição onde se deseja ir
 # Tem como entrada a posição a ser avaliada(a0) e a posição onde a peça esta(a1) 
 jal Verificar_Comer #Retorna a posição posição para movimento(a0) e caso comer seja possivel o endereço da peça a ser comida(a1)
 beq a1, zero, Não_Salvar_Comida
-
+addi sp, sp, -4
+sw a1, 0(sp)#Salva na pilha a posição da peça a ser comida
 Não_Salvar_Comida:
+addi sp, sp, -4
+sw zero, 0(sp)#Salva na pilha 0 pois não a peça a ser comida
 sw a0, 0(a6)#salva nova posição na pilha
 addi a6, a6, 4#Verifica a proxima posição
 lw a0, 0(a6)#Proxima posição a ser verificada
@@ -55,6 +58,14 @@ lw a2, 0(sp)
 addi sp, sp, 4
 lw a3, 0(sp)
 addi sp, sp, 4
+lw s3, 0(sp) #Posição caso a0 coma
+addi sp, sp, 4
+lw s4, 0(sp) #Posição caso a1 coma
+addi sp, sp, 4
+lw s5, 0(sp) #Posição caso a2 coma
+addi sp, sp, 4
+lw s6, 0(sp) #Posição caso a3 coma
+addi sp, sp, 4
 #Caso passe todas as opções de movimento foram verificadas
 #Pedir para o jogador escolher para qual das 4 posições ele deseja ir, onde a zero é a primeira a ser apresentada e a 3  a úlima
 add a4, a3, zero
@@ -66,18 +77,22 @@ li a7, 5
 ecall
 li t0, 0
 add t1, a1, zero
+add t2, s3, zero
 beq a0, t0, Fim_Jogada
 ecall
 li t0, 1
 add t1, a2, zero
+add t2, s4, zero
 beq a0, t0, Fim_Jogada
 ecall
 li t0, 2
 add t1, a3, zero
+add t2, s5, zero
 beq a0, t0, Fim_Jogada
 ecall
 li t0, 3
 add t1, a4, zero
+add t2, s6, zero
 beq a0, t0, Fim_Jogada
 j Opção_Invalida
 
@@ -96,14 +111,31 @@ jal Achar_Preta
 Fim_Jogada:
 add a0, t1, zero
 add a1, s2, zero
+add s3, t2, zero#Posição da peç a ser comida caso haja
 #tem como entradas se é branca ou preta(a1) e a posição(a0)   e retorna em a0 a mesma posição ou a posição +100 para indicar que é uma dama
 jal Verificar_Dama
 Fim_Jogada_Dama:
+li t0, 0
+bne s3, t0, Não_Comeu
+li t0, -2
+sw t0, 0(s3)
+addi s7, zero, -1#Flag para a jogada repetida
+sw a0,0(s1)
+jal Printar_Tela
+jal Verificar_Final_Jogo
+add a1, s1, zero
+j Mover_Peça
+Não_Comeu:
+li t0,-1
+beq s7, t0, Não_comeu_de_Novo#A ajogada repetida só ocorre caso coma outra peça
 sw a0,0(s1)
 jal Printar_Tela
 jal Verificar_Final_Jogo
 j Jogada_PC
 
+Não_comeu_de_Novo:
+#Printar Não comeu de novo e passar a jogada para o pc
+j Jogada_PC
 
 
 
