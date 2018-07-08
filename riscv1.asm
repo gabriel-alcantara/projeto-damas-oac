@@ -353,27 +353,61 @@ j Loop_Verificar_Inimiga
 
 Loop_Verificar_Inimiga:
 lw t1, 0(t0)
+li t4, -2
 bne a0, t1, Não_Inimiga#Caso haja uma peça inimiga verifica se é possvel comer ela
+beq a1, t4, Não_Pode_Comer#Indentifica a flag sabendo q esta passando pela segunda vez nela, endo assim há duas inimigas em sequencia ou seja não da pra comer
+add t4, a0, zero #Posição para onde a peça iria inicialmente
 sub t3, a0, a1
 add a0, a0, t3
 addi sp, sp -12
 sw t0, 0(sp)
 sw t1, 4(sp)
 sw ra, 8(sp)
+li t1,8
+rem t0, a0, t1 #Verifica a coluna da posição onde deseja ir
+rem t1, t4, t1#Verifica da posição previa, onde ele desejava ir
+sub  t0, t1, t0 # Pega a diferença entre elas
+li t1, 1
+blt t0, t1, Válido#Verifica se a diferença deles é maior q 1 se for é uma posição invalida
+li t1, -1
+bgt t0, t1, Válido#Verifica se a diferença deles é maior q 1 se for é uma posição invalida
+addi a0, zero, -1
+addi a1, zero, -1#Pois não havera peça para ser comida
+Válido:
 jal Verificar_Amigas #Verifica se há uma peça amiga na posição
+addi a1, zero, -1#flag para a função saber q esta passando pela segunda vez nela
+j Verificar_Comer
 lw t0, 0(sp)
 addi sp, sp, 4
 lw t1, 0(sp)
 addi sp, sp, 4
-lw a0, 0(sp)
-
+lw ra, 0(sp)
 jr ra
 Não_Inimiga:
+bne a1, t4, Salto#Indentifica a flag sabendo q esta passando pela segunda vez nela, então é possivel comer a peça, a0 já esta com o valor correto falta o a1
+lw t0, 0(sp)#Desempilha
+addi sp, sp, 4
+lw t1, 0(sp)
+addi sp, sp, 4
+lw ra, 0(sp)
+add a1, t0, zero #Salva o endereço da peça a ser comida
+jr ra
+Salto:
 beq t2, t3, Voltar
 addi t2, t2, 1
 addi t0, t0, 4
+addi a1, zero, -1#Pois não havera peça para ser comida
 j Loop_Verificar_Inimiga
 
+Não_Pode_Comer:
+lw t0, 0(sp)#Desempilha
+addi sp, sp, 4
+lw t1, 0(sp)
+addi sp, sp, 4
+lw ra, 0(sp)
+addi a0, zero, -1
+addi a1, zero, -1
+jr ra
 
 Ponta_Esquerda:
 li t1, 63
