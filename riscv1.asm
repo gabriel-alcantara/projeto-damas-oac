@@ -1,7 +1,7 @@
 .data
 Brancas: 0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22
 
-Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 57
+Pretas: 25, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 57
 MsgSelCol: .string "Digite o número da coluna(0 a 7): "
 MsgSelLin: .string "Digite o numero da linha(0 a 7): "
 MsgSelJog: .string "Digite o numero da sua jogada:(0,1,2,3): "
@@ -91,14 +91,11 @@ Verificações:
 	add a2, a1, zero
 	add a1, a0, zero
 Opção_Invalida:
-<<<<<<< HEAD
-=======
 	li t6,1
 	beq s2,t6,JogadaRandom
 	la a0,MsgSelJog # mesagem de seleçao de jogada
 	li a7,4
 	ecall
->>>>>>> 5441ab0e998b4bdd1d48ff158485154001c96938
 	li a7, 5 
 	ecall
 	j endRandom
@@ -113,26 +110,17 @@ Opção_Invalida:
 	add t1, a1, zero # t1 := posiçao jogada 1
 	add t2, s3, zero # t2 := posicao para comer jogada 1
 	beq a0, t0, Fim_Jogada
-<<<<<<< HEAD
 	#ecall
-=======
->>>>>>> 5441ab0e998b4bdd1d48ff158485154001c96938
 	li t0, 1
 	add t1, a2, zero
 	add t2, s4, zero
 	beq a0, t0, Fim_Jogada
-<<<<<<< HEAD
 	#ecall
-=======
->>>>>>> 5441ab0e998b4bdd1d48ff158485154001c96938
 	li t0, 2
 	add t1, a3, zero
 	add t2, s5, zero
 	beq a0, t0, Fim_Jogada
-<<<<<<< HEAD
 	#ecall
-=======
->>>>>>> 5441ab0e998b4bdd1d48ff158485154001c96938
 	li t0, 3
 	add t1, a4, zero
 	add t2, s6, zero
