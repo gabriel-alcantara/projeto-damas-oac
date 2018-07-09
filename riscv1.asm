@@ -558,6 +558,30 @@ Criar:
 		jr ra
 
 Verificar_Final_Jogo:
+	#Caso tds as peças de um dos doi lados seja eliminada
+	#Verificar Brancas
+	la t0, Brancas
+	li t4, 0
+	li t3, 12
+	add t5, zero, zero
+	add t6, zero, zero
+	Loop2:
+	lw t1, 0(t0)
+	li t2, -1
+	bne t1, t2, Sem_Pretas
+	addi t4,t4, 1
+	addi t0, t0, 4
+	j Loop2
+	Sem_Pretas:
+	beq t5, t6, Voltar
+	li, t5, 1 #Flag indicando q o jogo não acabou
+	la t0, Brancas
+	li t4, 0
+	li t3, 12
+	j Loop2
+	
+	
+
 
 Printar_Tela:
 
