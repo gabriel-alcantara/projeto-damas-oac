@@ -91,27 +91,54 @@ Verificações:
 	add a2, a1, zero
 	add a1, a0, zero
 Opção_Invalida:
+<<<<<<< HEAD
+=======
+	li t6,1
+	beq s2,t6,JogadaRandom
+	la a0,MsgSelJog # mesagem de seleçao de jogada
+	li a7,4
+	ecall
+>>>>>>> 5441ab0e998b4bdd1d48ff158485154001c96938
 	li a7, 5 
 	ecall
+	j endRandom
+	JogadaRandom:
+		li a7,30
+		addi a0,a0,1970
+		li t6,4
+		rem s10,a0,t6 # s0 := a0 % 4
+		mv a0,s10
+	endRandom:
 	li t0, 0
 	add t1, a1, zero # t1 := posiçao jogada 1
 	add t2, s3, zero # t2 := posicao para comer jogada 1
 	beq a0, t0, Fim_Jogada
+<<<<<<< HEAD
 	#ecall
+=======
+>>>>>>> 5441ab0e998b4bdd1d48ff158485154001c96938
 	li t0, 1
 	add t1, a2, zero
 	add t2, s4, zero
 	beq a0, t0, Fim_Jogada
+<<<<<<< HEAD
 	#ecall
+=======
+>>>>>>> 5441ab0e998b4bdd1d48ff158485154001c96938
 	li t0, 2
 	add t1, a3, zero
 	add t2, s5, zero
 	beq a0, t0, Fim_Jogada
+<<<<<<< HEAD
 	#ecall
+=======
+>>>>>>> 5441ab0e998b4bdd1d48ff158485154001c96938
 	li t0, 3
 	add t1, a4, zero
 	add t2, s6, zero
 	beq a0, t0, Fim_Jogada
+	li s9,-1
+	beq a0,s9,Opção_Invalida
 	j Opção_Invalida 
 
 # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
@@ -632,13 +659,13 @@ Jogada_PC:
 			mv s0,a0
 			addi s0,s0,1970
 			rem t2,s0,t0 # t2:= s0 % 12
-			li s1,4
-			mul t2,t2,s1 # t2 := t2*4
+			li s11,4
+			mul t2,t2,s11 # t2 := t2*4
 			add t1,t1,t2
 			lw t2,0(t1) # peça aletoria
 			li t3,-1
 			beq t2,t3,Loop_random
-			li t1,100
+			li t6,100
 			mv a0,t2 # a0 := posiçao da peça
 			mv a1,t1 # a1 := enderaço da peça
 			bge t2,t1,Mover_Dama
