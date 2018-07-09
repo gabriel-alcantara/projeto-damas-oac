@@ -603,10 +603,25 @@ j Jogada_Preta
 Jogada_PC:
 	li s2,1  # marca que jogada eh preta
 	LEVEL1:	
-		Loop_ramdom:li a7,30
+		Loop_random:li a7,30
 			li t0,12
 			la t1,Pretas
 			ecall # chamada de numero aleatorio
 			mv s0,a0
+			addi s0,s0,1970
+			rem t2,s0,t0 # t2:= s0 % 12
+			li s1,4
+			mul t2,t2,s1 # t2 := t2*4
+			add t1,t1,t2
+			lw t2,0(t1) # peça aletoria
+			li t3,-1
+			beq t2,t3,Loop_random
+			li t1,100
+			li a0,t2 # a0 := posiçao da peça
+			li a1,t1 # a1 := enderaço da peça
+			bge t2,t1,Mover_Dama
+			j Mover_Peça
+			
+			
 			
 		
