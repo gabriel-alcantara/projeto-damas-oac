@@ -1,7 +1,7 @@
 .data
 Brancas: 0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22
 
-Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 47
+Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 57
 MsgSelCol: .string "Digite o número da coluna(0 a 7): "
 MsgSelLin: .string "Digite o numero da linha(0 a 7): "
 MsgSelJog: .string "Digite o numero da sua jogada:(0,1,2,3): "
@@ -52,6 +52,12 @@ Verificações:
 	beq a1, zero, Não_Salvar_Comida
 	addi sp, sp, -4
 	sw a1, 0(sp)#Salva na pilha a posição da peça a ser comida
+	sw a0, 0(a6)	#salva nova posição na pilha
+	addi a6, a6,4	#Verifica a proxima posição
+	lw a0, 0(a6)	#Proxima posição a ser verificada
+	li t0, 4
+	addi a5, a5, 1
+	bne a5, t0, Verificações
 	Não_Salvar_Comida:
 		addi sp, sp, -4  
 		sw zero, 0(sp)	#Salva na pilha 0 pois não a peça a ser comida
@@ -85,30 +91,23 @@ Verificações:
 	add a2, a1, zero
 	add a1, a0, zero
 Opção_Invalida:
-	li t6,1
-	beq s2,t6,JogadaRandom
-	la a0,MsgSelJog # mesagem de seleçao de jogada
-	li a7,4
-	ecall
-	JogadaRandom:
-		
 	li a7, 5 
 	ecall
 	li t0, 0
 	add t1, a1, zero # t1 := posiçao jogada 1
 	add t2, s3, zero # t2 := posicao para comer jogada 1
 	beq a0, t0, Fim_Jogada
-	ecall
+	#ecall
 	li t0, 1
 	add t1, a2, zero
 	add t2, s4, zero
 	beq a0, t0, Fim_Jogada
-	ecall
+	#ecall
 	li t0, 2
 	add t1, a3, zero
 	add t2, s5, zero
 	beq a0, t0, Fim_Jogada
-	ecall
+	#ecall
 	li t0, 3
 	add t1, a4, zero
 	add t2, s6, zero
@@ -430,26 +429,40 @@ Verificar_Comer:
 		bgt t0, t1, Válido#Verifica se a diferença deles é maior q 1 se for é uma posição invalida
 		addi a0, zero, -1
 		addi a1, zero, -1#Pois não havera peça para ser comida
+		lw t0, 0(sp)#Desempilha
+		addi sp, sp, 4
+		lw t1, 0(sp)
+		addi sp, sp, 4
+		lw ra, 0(sp)
+		addi sp, sp, 4
+		add a1, t0, zero #Salva o endereço da peça a ser comida
+		jr ra
 		Válido:
 			jal Verificar_Amigas #Verifica se há uma peça amiga na posição
-			addi a1, zero, -1#flag para a função saber q esta passando pela segunda vez nela
+			addi a1, zero, -2#flag para a função saber q esta passando pela segunda vez nela
 			j Verificar_Comer
 			lw t0, 0(sp)
 			addi sp, sp, 4
 			lw t1, 0(sp)
 			addi sp, sp, 4
 			lw ra, 0(sp)
+			addi sp, sp, 4
 			jr ra
 	Não_Inimiga:
-		bne a1, t4, Salto#Indentifica a flag sabendo q esta passando pela segunda vez nela, então é possivel comer a peça, a0 já esta com o valor correto falta o a1
+		addi t0, t0, 4
+		addi t2, t2, 1
+		bne t2, t3, Loop_Verificar_Inimiga
+		beq a1, t4, Salto#Indentifica a flag sabendo q esta passando pela segunda vez nela, então é possivel comer a peça, a0 já esta com o valor correto falta o a1
+		jr ra
+	Salto:
 		lw t0, 0(sp)#Desempilha
 		addi sp, sp, 4
 		lw t1, 0(sp)
 		addi sp, sp, 4
 		lw ra, 0(sp)
+		addi sp, sp, 4
 		add a1, t0, zero #Salva o endereço da peça a ser comida
 		jr ra
-	Salto:
 		beq t2, t3, Voltar
 		addi t2, t2, 1
 		addi t0, t0, 4
@@ -462,6 +475,7 @@ Verificar_Comer:
 		lw t1, 0(sp)
 		addi sp, sp, 4
 		lw ra, 0(sp)
+		addi sp, sp, 4
 		addi a0, zero, -1
 		add a1, zero, zero
 		jr ra
