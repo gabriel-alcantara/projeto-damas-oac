@@ -4,6 +4,7 @@ Brancas: 0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22
 Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 47
 MsgSelCol: .string "Digite o número da coluna(0 a 7): "
 MsgSelLin: .string "Digite o numero da linha(0 a 7): "
+MsgSelJog: .string "Digite o numero da sua jogada:(0,1,2,3): "
  .text
  # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
 Jogada_Branca:
@@ -33,8 +34,8 @@ Mover_Peça:
 	sw a1, 4(sp)
 	sw a2, 8(sp)
 	sw a3, 12(sp)
-	add a6, zero, sp
-	add a5, zero, zero
+	add a6, zero, sp   # a6:= topo da pilha
+	add a5, zero, zero # a5:= 0
 Verificações:
 	add a1, zero, zero
 	jal Verificar_Amigas # entra a0 como a posição onde se deseja ir
@@ -44,7 +45,7 @@ Verificações:
 	addi sp, sp, -4
 	sw a1, 0(sp)#Salva na pilha a posição da peça a ser comida
 	Não_Salvar_Comida:
-		addi sp, sp, -4
+		addi sp, sp, -4  
 		sw zero, 0(sp)	#Salva na pilha 0 pois não a peça a ser comida
 		sw a0, 0(a6)	#salva nova posição na pilha
 		addi a6, a6, 4	#Verifica a proxima posição
@@ -76,11 +77,14 @@ Verificações:
 	add a2, a1, zero
 	add a1, a0, zero
 Opção_Invalida:
-	li a7, 5
+	la a0,MsgSelJog # mesagem de seleçao de jogada
+	li a7,4
+	ecall
+	li a7, 5 
 	ecall
 	li t0, 0
-	add t1, a1, zero
-	add t2, s3, zero
+	add t1, a1, zero # t1 := posiçao jogada 1
+	add t2, s3, zero # t2 := posicao para comer jogada 1
 	beq a0, t0, Fim_Jogada
 	ecall
 	li t0, 1
@@ -112,9 +116,9 @@ Jogada_Preta:
 
 
 	Fim_Jogada:
-	add a0, t1, zero
-	add a1, s2, zero
-	add s3, t2, zero#Posição da peç a ser comida caso haja
+	add a0, t1, zero # a0: = jogada selecionada
+	add a1, s2, zero # a1:= preta ou branca
+	add s3, t2, zero #Posição da peça ser comida caso haja
 #tem como entradas se é branca ou preta(a1) e a posição(a0)   e retorna em a0 a mesma posição ou a posição +100 para indicar que é uma dama
 	jal Verificar_Dama
 Fim_Jogada_Dama:
@@ -406,7 +410,7 @@ Verificar_Comer:
 		sw ra, 8(sp)
 		li t1,8
 		rem t0, a0, t1 #Verifica a coluna da posição onde deseja ir
-		rem t1, t4, t1#Verifica da posição previa, onde ele desejava ir
+		rem t1, t4, t1 #Verifica da posição previa, onde ele desejava ir
 		sub  t0, t1, t0 # Pega a diferença entre elas
 		li t1, 1
 		blt t0, t1, Válido#Verifica se a diferença deles é maior q 1 se for é uma posição invalida
