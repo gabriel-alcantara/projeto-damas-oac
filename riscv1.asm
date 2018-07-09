@@ -107,6 +107,14 @@ Opção_Invalida:
 		mv a0,s10
 	endRandom:
 	li t0, 0
+	bne a1, a2, Opções_Validas
+	bne a2, a3, Opções_Validas
+	bne a3, a4, Opções_Validas
+	li t6,1
+	beq s2,t6,Jogada_PC
+	j Jogada_Branca
+	j Jogada_PC
+	Opções_Validas:
 	add t1, a1, zero # t1 := posiçao jogada 1
 	add t2, s3, zero # t2 := posicao para comer jogada 1
 	beq a0, t0, Fim_Jogada
@@ -125,9 +133,9 @@ Opção_Invalida:
 	add t1, a4, zero
 	add t2, s6, zero
 	beq a0, t0, Fim_Jogada
-	li s9,-1
-	beq a0,s9,Opção_Invalida
-	j Opção_Invalida 
+	j Opção_Invalida
+	 
+
 
 # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
 Jogada_Preta:
@@ -142,6 +150,8 @@ Jogada_Preta:
 
 
 Fim_Jogada:
+	li s9,-1
+	beq t1,s9,Opção_Invalida
 	add a0, t1, zero # a0: = jogada selecionada
 	add a1, s2, zero # a1:= preta ou branca
 	add s3, t2, zero #Posição da peça ser comida caso haja
