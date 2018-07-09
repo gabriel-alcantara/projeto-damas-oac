@@ -6,6 +6,13 @@ MsgSelCol: .string "Digite o número da coluna(0 a 7): "
 MsgSelLin: .string "Digite o numero da linha(0 a 7): "
 MsgSelJog: .string "Digite o numero da sua jogada:(0,1,2,3): "
  .text
+ GAMELOOP:
+ 	jal tp,Printar_Tela
+ 	jal tp,Jogada_Branca
+ 	jal tp,Verificar_Final_Jogo
+ 	jal tp,Jogada_PC
+ 	jal tp,Verificar_Final_Jogo
+ 	j GAMELOOP
  # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
 Jogada_Branca:
  #Marca que a jogada é branca
@@ -136,13 +143,13 @@ Fim_Jogada_Dama:
 		li t0,-1
 		beq s7, t0, Não_comeu_de_Novo #A ajogada repetida só ocorre caso coma outra peça
 		sw a0,0(s1)
-	jal Printar_Tela
-	jal Verificar_Final_Jogo
-	j Jogada_PC
+	#jal Printar_Tela
+	#jal Verificar_Final_Jogo
+	jr tp # volta pro GAMELOOP
 
 Não_comeu_de_Novo:
 #Printar Não comeu de novo e passar a jogada para o pc
-j Jogada_PC
+jr tp # Volta pro GAMELOOP
 
 
 
@@ -530,8 +537,8 @@ Verificar_Amigas:
 		addi t2, t2, 1 # t2++
 		addi t0, t0, 4 #t0+=4
 		j Loop_Verificar_Amiga
-	Voltar:
-		jr ra
+Voltar:
+	jr ra
 
 Mover_Dama:
 
@@ -594,3 +601,12 @@ Não_Ha_Peça_Preta:
 j Jogada_Preta
 
 Jogada_PC:
+	li s2,1  # marca que jogada eh preta
+	LEVEL1:	
+		Loop_ramdom:li a7,30
+			li t0,12
+			la t1,Pretas
+			ecall # chamada de numero aleatorio
+			mv s0,a0
+			
+		
