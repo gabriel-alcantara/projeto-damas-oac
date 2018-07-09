@@ -617,8 +617,8 @@ Jogada_PC:
 			li t3,-1
 			beq t2,t3,Loop_random
 			li t1,100
-			li a0,t2 # a0 := posiçao da peça
-			li a1,t1 # a1 := enderaço da peça
+			mv a0,t2 # a0 := posiçao da peça
+			mv a1,t1 # a1 := enderaço da peça
 			bge t2,t1,Mover_Dama
 			j Mover_Peça
 			
