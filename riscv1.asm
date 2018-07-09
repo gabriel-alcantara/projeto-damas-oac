@@ -210,329 +210,167 @@ Possivel_Mover:
 		jr ra
 
 Dama_Branca:
-<<<<<<< HEAD
-add t0, a0, zero#Posição da peça
-la a1, Brancas
-lw t1, 0(a1)
-addi t0, t0, 100 #Somo-se 100 a posição para verificar se há alguma dama neste local
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-jr ra
-
-Dama_Preta:
-add t0, a0, zero
-la a1, Pretas
-lw t1, 0(a1)
-addi t0, t0, 100 #Somo-se 100 a posição para verificar se há alguma dama neste local
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-addi a1,a1, 4
-lw t1, 0(a1)
-beq t0, t1, Mover_Dama
-jr ra
-
-Achar_Branca:
-add t0, a0, zero
-la a1, Brancas
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-jal ra, Não_Ha_Peça_Branca
-
-Achar_Preta:
-add t0, a0, zero
-la a0, Pretas
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-addi a1,a1, 4
-lw t0, 0(a1)
-beq t0, a0, Mover_Peça
-jal ra, Não_Ha_Peça_Preta
-=======
 	add t0, a0, zero#Posição da peça
-	la t2, Brancas
-	lw t1, 0(t2)
+	la a1, Brancas
+	lw t1, 0(a1)
 	addi t0, t0, 100 #Somo-se 100 a posição para verificar se há alguma dama neste local
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
 	jr ra
 
 Dama_Preta:
 	add t0, a0, zero
-	la t2, Pretas
-	lw t1, 0(t2)
+	la a1, Pretas
+	lw t1, 0(a1)
 	addi t0, t0, 100 #Somo-se 100 a posição para verificar se há alguma dama neste local
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)	
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
-	addi t2,t2, 4
-	lw t1, 0(t2)
+	addi a1,a1, 4
+	lw t1, 0(a1)
 	beq t0, t1, Mover_Dama
 	jr ra
 
 Achar_Branca:
 	add t0, a0, zero
-	la t2, Brancas
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)	
-	beq t0, a1, Mover_Peça
+	la a1, Brancas
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
 	jal ra, Não_Ha_Peça_Branca
-	
+
 Achar_Preta:
 	add t0, a0, zero
-	la t2, Pretas
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
-	addi t2,t2, 4
-	lw a1, 0(t2)
-	beq t0, a1, Mover_Peça
+	la a0, Pretas
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
+	addi a1,a1, 4
+	lw t0, 0(a1)
+	beq t0, a0, Mover_Peça
 	jal ra, Não_Ha_Peça_Preta
->>>>>>> bc438b8d71a50bf80768595b024ceb5467358379
+
 
 
 Verificar_Comer:
