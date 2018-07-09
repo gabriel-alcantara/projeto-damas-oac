@@ -2,7 +2,8 @@
 Brancas: 0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22
 
 Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 47
-
+MsgSelCol: .string "Digite o número da coluna(0 a 7): "
+MsgSelLin: .string "Digite o numero da linha(0 a 7): "
  .text
  # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
 Jogada_Branca:
@@ -127,7 +128,7 @@ Fim_Jogada_Dama:
 	j Mover_Peça
 	Não_Comeu:
 		li t0,-1
-		beq s7, t0, Não_comeu_de_Novo#A ajogada repetida só ocorre caso coma outra peça
+		beq s7, t0, Não_comeu_de_Novo #A ajogada repetida só ocorre caso coma outra peça
 		sw a0,0(s1)
 	jal Printar_Tela
 	jal Verificar_Final_Jogo
@@ -141,6 +142,9 @@ j Jogada_PC
 
 Calcular_Posição:
 #Digitar posição ao qual deseja se mover
+	la a0,MsgSelLin # mensagem de leitura de linha
+	li a7,4
+	ecall
 	li a7, 5
 	ecall
 	li t1, 8
@@ -148,7 +152,10 @@ Calcular_Posição:
 	bgeu a0,t1, Linha_Coluna_Invalida 
 	add t0, a0, zero
 #Calcula-se a posição usando a coluna
-	mul t0, t0, t1
+	mul t0, t0, t1 # t0 := t0 * 8
+	la a0,MsgSelCol # mensagem de leitura de coluna
+	li a7,4
+	ecall
 #pega-se a linha
 	 li a7, 5
 	ecall
