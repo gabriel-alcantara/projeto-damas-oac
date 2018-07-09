@@ -1,7 +1,7 @@
 .data
 Brancas: 0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22
 
-Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 57
+Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 47
 MsgSelCol: .string "Digite o número da coluna(0 a 7): "
 MsgSelLin: .string "Digite o numero da linha(0 a 7): "
 MsgSelJog: .string "Digite o numero da sua jogada:(0,1,2,3): "
