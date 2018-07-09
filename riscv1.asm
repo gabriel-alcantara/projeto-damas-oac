@@ -44,10 +44,10 @@ Verificações:
 	sw a1, 0(sp)#Salva na pilha a posição da peça a ser comida
 	Não_Salvar_Comida:
 		addi sp, sp, -4
-		sw zero, 0(sp)#Salva na pilha 0 pois não a peça a ser comida
-		sw a0, 0(a6)#salva nova posição na pilha
-		addi a6, a6, 4#Verifica a proxima posição
-		lw a0, 0(a6)#Proxima posição a ser verificada
+		sw zero, 0(sp)	#Salva na pilha 0 pois não a peça a ser comida
+		sw a0, 0(a6)	#salva nova posição na pilha
+		addi a6, a6, 4	#Verifica a proxima posição
+		lw a0, 0(a6)	#Proxima posição a ser verificada
 		li t0, 4
 		bne a5, t0, Verificações
 	#Tirando da pilha as posições
@@ -422,15 +422,15 @@ Verificar_Comer:
 			addi sp, sp, 4
 			lw ra, 0(sp)
 			jr ra
-Não_Inimiga:
-	bne a1, t4, Salto#Indentifica a flag sabendo q esta passando pela segunda vez nela, então é possivel comer a peça, a0 já esta com o valor correto falta o a1
-	lw t0, 0(sp)#Desempilha
-	addi sp, sp, 4
-	lw t1, 0(sp)
-	addi sp, sp, 4
-	lw ra, 0(sp)
-	add a1, t0, zero #Salva o endereço da peça a ser comida
-	jr ra
+	Não_Inimiga:
+		bne a1, t4, Salto#Indentifica a flag sabendo q esta passando pela segunda vez nela, então é possivel comer a peça, a0 já esta com o valor correto falta o a1
+		lw t0, 0(sp)#Desempilha
+		addi sp, sp, 4
+		lw t1, 0(sp)
+		addi sp, sp, 4
+		lw ra, 0(sp)
+		add a1, t0, zero #Salva o endereço da peça a ser comida
+		jr ra
 	Salto:
 		beq t2, t3, Voltar
 		addi t2, t2, 1
@@ -441,12 +441,12 @@ Não_Inimiga:
 	Não_Pode_Comer:
 		lw t0, 0(sp)#Desempilha
 		addi sp, sp, 4
-	lw t1, 0(sp)
-	addi sp, sp, 4
-	lw ra, 0(sp)
-	addi a0, zero, -1
-	add a1, zero, zero
-	jr ra
+		lw t1, 0(sp)
+		addi sp, sp, 4
+		lw ra, 0(sp)
+		addi a0, zero, -1
+		add a1, zero, zero
+		jr ra
 
 Ponta_Esquerda:
 	li t1, 63
@@ -521,9 +521,9 @@ Verificar_Amigas:
 		jr ra
 	Não_Amiga1:
 		beq t2, t3, Voltar
-		addi t2, t2, 1
-	addi t0, t0, 4
-	j Loop_Verificar_Amiga
+		addi t2, t2, 1 # t2++
+		addi t0, t0, 4 #t0+=4
+		j Loop_Verificar_Amiga
 	Voltar:
 		jr ra
 
