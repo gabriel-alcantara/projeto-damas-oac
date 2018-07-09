@@ -5,11 +5,12 @@ Pretas: 57, 59, 61, 63, 48, 50, 52, 54, 41, 43, 45, 47
 MsgSelCol: .string "Digite o número da coluna(0 a 7): "
 MsgSelLin: .string "Digite o numero da linha(0 a 7): "
 MsgSelJog: .string "Digite o numero da sua jogada:(0,1,2,3): "
+MsgInvLin: .string "Linha ou Coluna inválida"
  .text
  GAMELOOP:
  	jal tp,Printar_Tela
  	jal tp,Jogada_Branca
- 	jal tp,Verificar_Final_Jogo
+ 	jal Verificar_Final_Jogo
  	jal tp,Jogada_PC
  	jal tp,Verificar_Final_Jogo
  	j GAMELOOP
@@ -55,27 +56,27 @@ Verificações:
 		addi sp, sp, -4  
 		sw zero, 0(sp)	#Salva na pilha 0 pois não a peça a ser comida
 		sw a0, 0(a6)	#salva nova posição na pilha
-		addi a6, a6, 4	#Verifica a proxima posição
+		addi a6, a6,4	#Verifica a proxima posição
 		lw a0, 0(a6)	#Proxima posição a ser verificada
 		li t0, 4
 		addi a5, a5, 1
 		bne a5, t0, Verificações
 	#Tirando da pilha as posições
-	lw a0, 0(sp)
+	lw s6, 0(sp)
 	addi sp, sp, 4
-	lw a1, 0(sp)
+	lw s5, 0(sp)
 	addi sp, sp, 4
-	lw a2, 0(sp)
+	lw s4, 0(sp)
 	addi sp, sp, 4
-	lw a3, 0(sp)
+	lw s3, 0(sp)
 	addi sp, sp, 4
-	lw s3, 0(sp) #Posição caso a0 coma
+	lw a0, 0(sp) #Posição caso a0 coma
 	addi sp, sp, 4
-	lw s4, 0(sp) #Posição caso a1 coma
+	lw a1, 0(sp) #Posição caso a1 coma
 	addi sp, sp, 4
-	lw s5, 0(sp) #Posição caso a2 coma
+	lw a2, 0(sp) #Posição caso a2 coma
 	addi sp, sp, 4
-	lw s6, 0(sp) #Posição caso a3 coma
+	lw a3, 0(sp) #Posição caso a3 coma
 	addi sp, sp, 4
 	#Caso passe todas as opções de movimento foram verificadas
 	#Pedir para o jogador escolher para qual das 4 posições ele deseja ir, onde a zero é a primeira a ser apresentada e a 3  a úlima
@@ -84,9 +85,13 @@ Verificações:
 	add a2, a1, zero
 	add a1, a0, zero
 Opção_Invalida:
+	li t6,1
+	beq s2,t6,JogadaRandom
 	la a0,MsgSelJog # mesagem de seleçao de jogada
 	li a7,4
 	ecall
+	JogadaRandom:
+		
 	li a7, 5 
 	ecall
 	li t0, 0
@@ -108,7 +113,7 @@ Opção_Invalida:
 	add t1, a4, zero
 	add t2, s6, zero
 	beq a0, t0, Fim_Jogada
-	j Opção_Invalida
+	j Opção_Invalida 
 
 # As brancas começam jogando começa jogando, digita-se a linha e a coluna da peça
 Jogada_Preta:
@@ -122,30 +127,30 @@ Jogada_Preta:
 	jal Achar_Preta
 
 
-	Fim_Jogada:
+Fim_Jogada:
 	add a0, t1, zero # a0: = jogada selecionada
 	add a1, s2, zero # a1:= preta ou branca
 	add s3, t2, zero #Posição da peça ser comida caso haja
 #tem como entradas se é branca ou preta(a1) e a posição(a0)   e retorna em a0 a mesma posição ou a posição +100 para indicar que é uma dama
 	jal Verificar_Dama
-Fim_Jogada_Dama:
-	li t0, 0
-	bne s3, t0, Não_Comeu
-	li t0, -2
-	sw t0, 0(s3)
-	addi s7, zero, -1#Flag para a jogada repetida
-	sw a0,0(s1)
-	jal Printar_Tela
-	jal Verificar_Final_Jogo
-	add a1, s1, zero
-	j Mover_Peça
-	Não_Comeu:
-		li t0,-1
-		beq s7, t0, Não_comeu_de_Novo #A ajogada repetida só ocorre caso coma outra peça
+	Fim_Jogada_Dama:
+		li t0, 0
+		beq s3, t0, Não_Comeu
+		li t0, -2
+		sw t0, 0(s3)
+		addi s7, zero, -1#Flag para a jogada repetida
 		sw a0,0(s1)
-	#jal Printar_Tela
-	#jal Verificar_Final_Jogo
-	jr tp # volta pro GAMELOOP
+		jal Printar_Tela
+		jal Verificar_Final_Jogo
+		add a1, s1, zero
+		j Mover_Peça
+		Não_Comeu:
+			li t0,-1
+			beq s7, t0, Não_comeu_de_Novo #A ajogada repetida só ocorre caso coma outra peça
+			sw a0,0(s1)
+		#jal Printar_Tela
+		#jal Verificar_Final_Jogo
+		jr tp # volta pro GAMELOOP
 
 Não_comeu_de_Novo:
 #Printar Não comeu de novo e passar a jogada para o pc
@@ -182,13 +187,13 @@ Calcular_Posição:
 Possivel_Mover:
 #vai retornar a coluna que a peça esta
 	li t1, 8
-	rem t0, a0, t1
+	rem t0, s0, t1
 	li t1,0
 	beq t0, t1, Ponta_Esquerda
 	li t1,7
 	beq t0, t1, Ponta_Direita
 	li t1, 63
-	addi t0, a0, 7
+	addi t0, s0, 7 
 	bltz t0, Não_Fixa_1
 	bgt t0, t1, Não_Fixa_1
 	add a0, t0, zero
@@ -196,7 +201,7 @@ Possivel_Mover:
 	Não_Fixa_1:
 		li a0, -1
 	Continua1:
-		addi t0, a0, 9
+		addi t0, s0, 9
 		bltz t0, Não_Fixa_2
 		bgt t0, t1, Não_Fixa_2
 		add a1, t0, zero
@@ -204,7 +209,7 @@ Possivel_Mover:
 	Não_Fixa_2:
 		li a1, -1
 	Continua2:
-		addi t0, a0, -7
+		addi t0, s0, -7
 		bltz t0, Não_Fixa_3
 		bgt t0, t1, Não_Fixa_3
 	add a2, t0, zero
@@ -212,7 +217,7 @@ Possivel_Mover:
 	Não_Fixa_3:
 		li a2, -1
 	Continua3:
-		addi t0, a0, -9
+		addi t0, s0, -9
 		bltz t0, Não_Fixa_4
 		bgt t0, t1, Não_Fixa_4
 		add a3, t0, zero
@@ -507,6 +512,9 @@ Ponta_Direita:
 
 Linha_Coluna_Invalida:
 #Printar coluna ou linha invlida e voltar para a pergunta da posição
+la a0,MsgInvLin
+li a7,4
+ecall
 j Calcular_Posição
 
 
@@ -543,9 +551,9 @@ Voltar:
 Mover_Dama:
 
 
-Verificar_Dama:
+Verificar_Dama: 
 	li t1, 55
-	bgt a0, t1, Criar_Dama_Branca
+	bgt s3, t1, Criar_Dama_Branca
 	li t1, 8
 	blt a0, t1, Criar_Dama_Preta
 	jr ra
@@ -591,7 +599,7 @@ Verificar_Final_Jogo:
 
 
 Printar_Tela:
-
+jr tp
 Não_Ha_Peça_Branca:
 #Falar que não há peça nesta posição
 j Jogada_Branca
