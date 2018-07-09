@@ -34,6 +34,7 @@ Mover_Peça:
 	sw a2, 8(sp)
 	sw a3, 12(sp)
 	add a6, zero, sp
+	add a5, zero, zero
 Verificações:
 	add a1, zero, zero
 	jal Verificar_Amigas # entra a0 como a posição onde se deseja ir
@@ -49,6 +50,7 @@ Verificações:
 		addi a6, a6, 4#Verifica a proxima posição
 		lw a0, 0(a6)#Proxima posição a ser verificada
 		li t0, 4
+		addi a5, a5, 1
 		bne a5, t0, Verificações
 	#Tirando da pilha as posições
 	lw a0, 0(sp)
@@ -396,8 +398,8 @@ Verificar_Comer:
 		bne a0, t1, Não_Inimiga#Caso haja uma peça inimiga verifica se é possvel comer ela
 		beq a1, t4, Não_Pode_Comer#Indentifica a flag sabendo q esta passando pela segunda vez nela, endo assim há duas inimigas em sequencia ou seja não da pra comer
 		add t4, a0, zero #Posição para onde a peça iria inicialmente
-		sub t3, a0, a1
-		add a0, a0, t3
+		sub t3, t4, s0#Diferença ente a posição q deja ir e onde a peça esta
+		add a0, a0, t3#Tem-se  a posição seguinte para onde a peça deve ir
 		addi sp, sp -12
 		sw t0, 0(sp)
 		sw t1, 4(sp)
